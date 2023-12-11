@@ -16,6 +16,7 @@ class ProductController extends Controller
      */
     public function index(){
         $products = Product::with('categories')->latest()->paginate(10);
+        
         return response()->json($products);
     }
 
@@ -87,7 +88,7 @@ class ProductController extends Controller
         $categories =$input['categories'];
         unset($input['categories']);
         $product->update($input);
-        $product->categories->detach();
+        $product->categories()->detach();
         $product->categories()->attach($categories);
         return response()->json([
             "status" => 1,
@@ -104,10 +105,10 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        $product->with('categories')->delete();
+        $product->categories()->detach();
+        $product->delete();
         return response()->json([
             "status" => 1,
-            "data" => $product,
             "msg" => "Product deleted successfully"
         ],201);
     }

@@ -66,14 +66,13 @@ class CategoryController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Category $category){
-        $request->validate([
-            'name' => 'required'
-        ]);
+      
 
         $validator = Validator::make(request()->all(), [
             'name' => 'required',
            
         ]);
+        
         if ($validator->fails()) {
             return response()->json([
                 'errors' => $validator->errors(),
