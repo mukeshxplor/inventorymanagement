@@ -4,26 +4,25 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Models\Category;
+use App\Models\Product;
 
-class CategoryController extends Controller
+class ProductController extends Controller
 {
-   
-   /**
+    /**
      * All the specified resource from storage.
      *
-     * @param  \App\Models\Category  $Categories
+     * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
     public function index(){
-        $categories = Category::latest()->paginate(10);
-        return response()->json($categories);
+        $products = Product::with('categories')->latest()->paginate(10);
+        return response()->json($products);
     }
 
     /**
      * Add the specified resource from storage.
      *
-     * @param  \App\Models\Category  $Categories
+     * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
 
@@ -31,7 +30,6 @@ class CategoryController extends Controller
      
         $validator = Validator::make(request()->all(), [
             'name' => 'required',
-           
         ]);
         
         if ($validator->fails()) {
@@ -42,37 +40,41 @@ class CategoryController extends Controller
         }
 
         $input = $request->all(); 
-        Category::create($input);
-        return response()->json(['message'=>'Category created success'],201);
+        $categories = $input['categories'];
+        unset($input['categories']);
+        $product = Product::create($input);
+        $product->categories()->attach($categories);
+
+        return response()->json(['message'=>'Product created success'],201);
     }
 
     /**
      * Get the specified resource from storage.
      *
-     * @param  \App\Models\Category  $Categories
+     * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show(Category $category){
+    public function show(Product $product){
+        $record = $product->with('categories')->get();
         return response()->json([
                 "status" => 1,
-                "data" =>$category
+                "data" =>$record
         ],201);
     }
 
      /**
      * Update the specified resource from storage.
      *
-     * @param  \App\Models\Category  $Categories
+     * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category){
+    public function update(Request $request, Product $product){
         $request->validate([
             'name' => 'required'
         ]);
 
         $validator = Validator::make(request()->all(), [
             'name' => 'required',
-           
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -80,29 +82,33 @@ class CategoryController extends Controller
                 'status' => 404,
             ],201);
         }
-
-        $category->update($request->all());
-
+        // $product->categories()->delete();
+        $input = $request->all();
+        $categories =$input['categories'];
+        unset($input['categories']);
+        $product->update($input);
+        $product->categories->detach();
+        $product->categories()->attach($categories);
         return response()->json([
             "status" => 1,
-            "data" => $category,
-            "msg" => "category updated successfully"
+            "data" => $product,
+            "msg" => "Product updated successfully"
         ],201);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Category  $Categories
+     * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy(Product $product)
     {
-        $category->delete();
+        $product->with('categories')->delete();
         return response()->json([
             "status" => 1,
-            "data" => $category,
-            "msg" => "Category deleted successfully"
+            "data" => $product,
+            "msg" => "Product deleted successfully"
         ],201);
     }
 }
