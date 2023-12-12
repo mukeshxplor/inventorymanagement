@@ -12,6 +12,16 @@
 				{
 					"name": "Get all category with pagination",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "mukesh-test",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -39,7 +49,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\":\"product one\",\r\n    \"description\":\"this for test\",\r\n    \"price\": \"40\",\r\n    \"quantity\": \"50\",\r\n    \"categories\": [2,3]\r\n}",
+							"raw": "{\r\n    \"name\":\"category five\",\r\n    \"description\":\"this for test\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -47,7 +57,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/product",
+							"raw": "http://127.0.0.1:8000/api/category",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -58,7 +68,7 @@
 							"port": "8000",
 							"path": [
 								"api",
-								"product"
+								"category"
 							]
 						}
 					},
@@ -95,7 +105,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\":\"category one\",\r\n    \"description\":\"this for test\"\r\n}",
+							"raw": "{\r\n    \"name\":\"category 2\",\r\n    \"description\":\"this for test\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -103,7 +113,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/category/1",
+							"raw": "http://127.0.0.1:8000/api/category/4",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -115,7 +125,7 @@
 							"path": [
 								"api",
 								"category",
-								"1"
+								"4"
 							]
 						}
 					},
@@ -150,38 +160,6 @@
 		{
 			"name": "product",
 			"item": [
-				{
-					"name": "http://127.0.0.1:8000/api/product",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"name\":\"product\",\r\n    \"description\":\" unqired\",\r\n    \"price\": 100,\r\n    \"quantity\":\"10\",\r\n    \"categories\":[2,3]\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://127.0.0.1:8000/api/product",
-							"protocol": "http",
-							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
-							],
-							"port": "8000",
-							"path": [
-								"api",
-								"product"
-							]
-						}
-					},
-					"response": []
-				},
 				{
 					"name": "Get all latest records",
 					"protocolProfileBehavior": {
@@ -234,6 +212,95 @@
 								}
 							}
 						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/product/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"product",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update product",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"product\",\r\n    \"description\":\" unqired\",\r\n    \"price\": 100,\r\n    \"quantity\":\"10\",\r\n    \"categories\":[3]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/product/3",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"product",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"product three\",\r\n    \"description\":\" unqired\",\r\n    \"price\": 100,\r\n    \"quantity\":\"10\",\r\n    \"categories\":[2,4]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/product",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Product",
+					"request": {
+						"method": "DELETE",
+						"header": [],
 						"url": {
 							"raw": "http://127.0.0.1:8000/api/product/1",
 							"protocol": "http",

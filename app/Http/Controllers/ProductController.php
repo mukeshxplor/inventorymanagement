@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Product;
+use Mail;
+// use App\User;
 
 class ProductController extends Controller
 {
@@ -16,7 +18,6 @@ class ProductController extends Controller
      */
     public function index(){
         $products = Product::with('categories')->latest()->paginate(10);
-        
         return response()->json($products);
     }
 
@@ -45,7 +46,7 @@ class ProductController extends Controller
         unset($input['categories']);
         $product = Product::create($input);
         $product->categories()->attach($categories);
-
+        // $this->sendEmailReminder($request,$id);
         return response()->json(['message'=>'Product created success'],201);
     }
 
@@ -90,6 +91,7 @@ class ProductController extends Controller
         $product->update($input);
         $product->categories()->detach();
         $product->categories()->attach($categories);
+         // $this->sendEmailReminder($request,$id);
         return response()->json([
             "status" => 1,
             "data" => $product,
@@ -111,5 +113,24 @@ class ProductController extends Controller
             "status" => 1,
             "msg" => "Product deleted successfully"
         ],201);
+    }
+
+     /**
+     * Send an e-mail reminder to the user.
+     *
+     * @param  Request  $request
+     * @param  int  $id
+     * @return Response
+     */
+    public function sendEmailReminder(Request $request, $id)
+    {
+        return true;
+        // $user = User::findOrFail($id);
+        $user = 'mukesh@gmail.com';
+        Mail::send('emails.reminder', ['user' => 1], function ($m) use ($user) {
+            $m->from('hello@app.com', 'Your Application');
+ 
+            $m->to('admin@admin.com', 'admin')->subject('Your Reminder!');
+        });
     }
 }
